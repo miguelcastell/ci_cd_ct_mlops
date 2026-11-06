@@ -18,11 +18,11 @@ sys.path.insert(0, str(RAIZ / "src"))
 from mlops_demo.data import gerar_lote  # noqa: E402
 
 DESCRICAO = {
-    1: "Bug no pré-processamento: remove a última coluna. Esperado: CI falha em test_codigo.",
-    2: "Dados corrompidos na base de treino. Esperado: CI falha em test_dados.",
-    3: "Hiperparâmetro ruim (C muito pequeno). Esperado: CI falha em test_modelo (recall).",
-    4: "Lote novo com drift. Esperado: CI verde e CT dispara, retreina e o portão aprova.",
-    5: "class_weight extremo. Esperado: recall 1,0, precisão baixa, CI e portão do CT reprovam.",
+    1: "Bug no pré-processamento: some o capital_run_length_total. Esperado: CI falha (código).",
+    2: "Dados corrompidos (nulos, frequência < 0 e > 100%). Esperado: CI falha em validar dados.",
+    3: "C muito pequeno: o filtro para de marcar spam. Esperado: CI falha em test_modelo.",
+    4: "Lote novo com drift (sinais de spam x2). Esperado: CI verde, CT retreina e portão aprova.",
+    5: "class_weight extremo no spam: recall ~1 e precisão baixa. Esperado: CI e portão reprovam.",
 }
 
 
@@ -45,23 +45,31 @@ def cenario_1() -> None:
 def cenario_2() -> None:
     caminho = RAIZ / "data" / "raw" / "base_treino.csv"
     df = pd.read_csv(caminho)
-    df.loc[0:4, "mean radius"] = None
-    df.loc[5:7, "mean area"] = -10.0
-    df.to_csv(caminho, index=False)
-    print("alterado: data/raw/base_treino.csv (5 nulos em mean radius, 3 áreas negativas)")
+    df.loc[0:4, "word_freq_free"] = None
+    df.loc[5:7, "char_freq_dollar"] = -1.0
+    df.loc[8:9, "word_freq_money"] = 250.0
+    df.to_csv(caminho, index=False, lineterminator="\n")
+    print(
+        "alterado: data/raw/base_treino.csv (5 nulos em word_freq_free, 3 char_freq_dollar"
+        " negativos, 2 word_freq_money = 250%)"
+    )
 
 
 def cenario_3() -> None:
-    _substituir(RAIZ / "params.yaml", "C: 1.0", "C: 0.00005")
+    _substituir(RAIZ / "params.yaml", "C: 0.1", "C: 0.00001")
 
 
 def cenario_4() -> None:
-    caminho = gerar_lote("lote_01", n=120, fator_drift=0.75, semente=1)
-    print("criado:", Path(caminho).relative_to(RAIZ), "(atributos de tamanho 25% menores)")
+    caminho = gerar_lote("lote_01", n=800, fator_drift=2.0, semente=1)
+    print(
+        "criado:",
+        Path(caminho).relative_to(RAIZ),
+        "(free, remove, money, !, $ e maiúsculas x2 em 800 e-mails)",
+    )
 
 
 def cenario_5() -> None:
-    _substituir(RAIZ / "params.yaml", "class_weight: balanced", "class_weight: {0: 50, 1: 1}")
+    _substituir(RAIZ / "params.yaml", "class_weight: {0: 2, 1: 1}", "class_weight: {0: 1, 1: 50}")
 
 
 CENARIOS = {1: cenario_1, 2: cenario_2, 3: cenario_3, 4: cenario_4, 5: cenario_5}
