@@ -24,11 +24,12 @@ def chamar(caminho: str, corpo: dict | None = None) -> dict:
 
 saude = chamar("/health")
 assert saude["status"] == "ok", saude
+assert chamar("/atributos")["n_atributos"] == 57
 print("health ok | versão:", saude["versao_codigo"])
 
 with open(HOLDOUT, encoding="utf-8") as arquivo:
     linha = next(csv.DictReader(arquivo))
-linha.pop("target")
+linha.pop("spam")
 predicao = chamar("/predict", {"atributos": [float(v) for v in linha.values()]})
-assert predicao["classe"] in {"maligno", "benigno"}, predicao
+assert predicao["classe"] in {"spam", "legitimo"}, predicao
 print("predict ok |", predicao)
