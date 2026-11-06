@@ -1,7 +1,7 @@
 {
-  "precisao_spam": 0.9594594594594594,
-  "recall_spam": 0.8897243107769424,
-  "acuracia": 0.941,
-  "n_amostras": 1000,
-  "origem": "base_treino.csv"
+  "precisao_spam": 0.9510763209393346,
+  "recall_spam": 0.8709677419354839,
+  "acuracia": 0.9307142857142857,
+  "n_amostras": 1400,
+  "origem": "treinamento contínuo (CT)"
 }
