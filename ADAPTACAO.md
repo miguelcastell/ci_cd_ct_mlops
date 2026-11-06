@@ -57,13 +57,15 @@ porque com 57 atributos e 40 linhas a regularização do `params.yaml` impede a 
 
 | | Evidência | Execução |
 |---|---|---|
-| E1 | CI verde na `main` após a adaptação | _link_ |
-| E2 | CI vermelho por falha controlada (cenário N) | _link_ |
-| E3 | CT com drift e portão aprovando (cenário 4) | _link_ |
-| E4 | CT com portão reprovando (cenário 5: recall 0,99, precisão 0,63) | _link_ |
-| E5 | CD verde com a tag `v1.0.0` e imagem no ghcr.io | _link_ |
+| E0 | CI verde do projeto original, antes de qualquer mudança | [CI #42308607702](https://github.com/miguelcastell/ci_cd_ct_mlops/actions/runs/42308607702) |
+| E1 | CI verde na `main` após a adaptação (3 jobs) | [CI #42308755831](https://github.com/miguelcastell/ci_cd_ct_mlops/actions/runs/42308755831) |
+| E2 | CI vermelho no step **Testes de código** (cenário 1, [PR #1](https://github.com/miguelcastell/ci_cd_ct_mlops/pull/1)) | [CI #42308913340](https://github.com/miguelcastell/ci_cd_ct_mlops/actions/runs/42308913340) |
+| E3 | CT com drift (5 de 57 atributos) e portão aprovando (cenário 4, [PR #2](https://github.com/miguelcastell/ci_cd_ct_mlops/pull/2)); após o merge, o CT da `main` abriu o [PR #3](https://github.com/miguelcastell/ci_cd_ct_mlops/pull/3) com o novo campeão (precisão 0,951 x 0,945) | [CT no PR #42308947964](https://github.com/miguelcastell/ci_cd_ct_mlops/actions/runs/42308947964) · [CT na main #42309160728](https://github.com/miguelcastell/ci_cd_ct_mlops/actions/runs/42309160728) |
+| E4 | CT vermelho no **Portão de qualidade** (cenário 5, [PR #4](https://github.com/miguelcastell/ci_cd_ct_mlops/pull/4)): recall 0,991, precisão 0,628; campeão não mudou | [CT #42309599746](https://github.com/miguelcastell/ci_cd_ct_mlops/actions/runs/42309599746) · [CI #42309599684](https://github.com/miguelcastell/ci_cd_ct_mlops/actions/runs/42309599684) |
+| E5 | CD verde com a tag `v1.0.0`: CI, imagem, teste de fumaça e publicação | [CD #42309818980](https://github.com/miguelcastell/ci_cd_ct_mlops/actions/runs/42309818980) |
 
-Pacote: _link da página em Packages_
+Pacote (público): [ghcr.io/miguelcastell/ci_cd_ct_mlops](https://github.com/miguelcastell/ci_cd_ct_mlops/pkgs/container/ci_cd_ct_mlops), tags `1.0.0`
+e `latest`.
 
 ## 5. Limites e riscos
 
