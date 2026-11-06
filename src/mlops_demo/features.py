@@ -1,9 +1,10 @@
 """Pré-processamento e construção do pipeline de modelo."""
 
+import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import FunctionTransformer, StandardScaler
 
 from mlops_demo.config import ALVO, FEATURES
 
@@ -19,10 +20,15 @@ def separar_xy(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
 
 
 def construir_pipeline(params: dict) -> Pipeline:
-    """Pipeline de treino: padronização + regressão logística."""
+    """Pipeline de treino: log(1 + x) + padronização + regressão logística.
+
+    As frequências e as contagens de maiúsculas do Spambase são muito assimétricas (muitos zeros
+    e caudas longas). O log1p comprime as caudas antes da padronização.
+    """
     modelo = params["modelo"]
     return Pipeline(
         [
+            ("log1p", FunctionTransformer(np.log1p)),
             ("padronizar", StandardScaler()),
             (
                 "classificador",
