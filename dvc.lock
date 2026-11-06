@@ -1,0 +1,57 @@
+schema: '2.0'
+stages:
+  preparar:
+    cmd: python -m mlops_demo.data preparar
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: eeeb314fe0688c141bcc122fd981e714.dir
+      size: 85962
+      nfiles: 3
+    - path: src/mlops_demo/data.py
+      hash: md5
+      md5: 9bfea92c9dcb23191aeed604aa0c2c91
+      size: 5970
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 4097ef46f2b33c3464337fe6060087d9.dir
+      size: 86364
+      nfiles: 2
+  treinar:
+    cmd: python -m mlops_demo.train
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 4097ef46f2b33c3464337fe6060087d9.dir
+      size: 86364
+      nfiles: 2
+    - path: src/mlops_demo/evaluate.py
+      hash: md5
+      md5: 7316f121cc9a221a50a7463560511c33
+      size: 957
+    - path: src/mlops_demo/features.py
+      hash: md5
+      md5: e26dc956d14d5883c354e445ad1dfb02
+      size: 1189
+    - path: src/mlops_demo/train.py
+      hash: md5
+      md5: dc9c820c8166509c2f65adf1c41a44bb
+      size: 2119
+    params:
+      params.yaml:
+        modelo:
+          C: 1.0
+          max_iter: 1000
+          class_weight: balanced
+        semente: 42
+    outs:
+    - path: models/candidate
+      hash: md5
+      md5: 534e32acc6d8baee62f8df29d531e9a1.dir
+      size: 3089
+      nfiles: 1
+    - path: reports/candidate_metrics.json
+      hash: md5
+      md5: a710032f717479edf62bda07c98b4390
+      size: 129
