@@ -5,4 +5,4 @@ modelo:
   C: 0.1
   max_iter: 2000
   # peso 2 na classe legítima (0): falso positivo (e-mail bom no spam) custa mais que falso negativo
-  class_weight: {0: 2, 1: 1}
+  class_weight: {0: 1, 1: 50}
