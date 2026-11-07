@@ -86,10 +86,13 @@ positivo em massa afeta todos os usuários. Mitigações: lotes rotulados por fo
 
 ## 6. Contribuição e uso de IA
 
-| Integrante | Contribuição |
-|---|---|
-| Miguel Mantoan Castellani | _a preencher_ |
-| _nome_ | _a preencher_ |
+| Integrante |
+|---|
+| Miguel Mantoan Castellani |
+| Victor Sauer |
+| Fernando Fabian |
+| João Bach |
+| Guilherme Bettega |
 
 **Uso de IA:** usamos o Claude Code (Anthropic) para adaptar o código, os testes e os cenários ao Spambase, calibrar o
 drift e os limiares com experimentos locais e escrever a primeira versão deste relatório e do README. A equipe revisou
